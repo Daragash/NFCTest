@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NFCTest</string>
+    <string name="nfc_not_avail">NFC not available</string>
+    <string name="nfc_alert_title">NFC alert title</string>
+    <string name="nfc_not_activated">NFC not activated</string>
+    <string name="nfc_alert_yes">NFC alert yes</string>
+    <string name="nfc_alert_no">NFC alert no</string>
 </resources>
