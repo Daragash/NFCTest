@@ -15,6 +15,12 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.ndeftools.Message;
+import org.ndeftools.Record;
+import org.ndeftools.wellknown.TextRecord;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private NfcAdapter nfcAdapter;
     private String TAG;
@@ -82,14 +88,24 @@ public class MainActivity extends AppCompatActivity {
 
         Parcelable[] rawMessages =
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-        if (rawMessages != null && rawMessages.length > 0) {
-            NdefMessage[] messages = new NdefMessage[rawMessages.length];
-            Log.d(TAG, "handleNfcNdefIntent: message size = " + rawMessages.length);
+        if (rawMessages != null) {
             for (int i = 0; i < rawMessages.length; i++) {
-                messages[i] = (NdefMessage) rawMessages[i];
-                for(NdefRecord record : messages[i].getRecords()) {
-                    String payloadStringData = new String(record.getPayload());
-                    Log.d(TAG, "handleNfcNdefIntent: " + payloadStringData);
+                try {
+                    List<Record> records = new Message((NdefMessage)rawMessages[i]);
+                    Log.d(TAG, "Message " + i + " mit " + records.size() + " Records");
+                    for(int k = 0; k < records.size(); k++) {
+                        Log.d(TAG, " Record #" + k + " ist ein " +
+                                records.get(k).getClass().getSimpleName());
+                        Record record = records.get(k);
+                        // Hier kann auf den erwarteten Recordtyp geprüft und dessen
+                        // Inhalt verarbeitet werden
+                        if(record instanceof TextRecord) {
+                            TextRecord tr = (TextRecord) record;
+                            Log.d(TAG, "TextRecord is " + tr.getText());
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "Problem parsing message", e);
                 }
             }
         }
