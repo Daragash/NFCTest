@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private NfcAdapter nfcAdapter;
+    private String TAG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             finish();
         }
+
+        // intent auswerten, wenn Aktivität über intent gestartet wurde
+        Intent intent = getIntent();
+        Log.d(TAG, "onCreate: " + intent.getAction());
+        handleNfcNdefIntent(intent);
     }
 
     @Override
@@ -53,5 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
                 alertbox.show();
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d(TAG, "onNewIntent: " + intent.getAction());
+        handleNfcNdefIntent(intent);
+        super.onNewIntent(intent);
+    }
+
+    private void handleNfcNdefIntent(Intent intent) {
+        // Abbruch, wenn der Intent kein NFC-NDEF Intent ist
+        if (!intent.hasExtra(NfcAdapter.EXTRA_TAG)) return;
+        // Ansonsten Intent verarbeiten
+        Toast.makeText(this, getString(R.string.nfc_intent_received) +
+                ": " + intent.getAction(), Toast.LENGTH_LONG).show();
     }
 }

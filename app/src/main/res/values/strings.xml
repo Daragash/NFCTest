@@ -5,4 +5,5 @@
     <string name="nfc_not_activated">NFC not activated</string>
     <string name="nfc_alert_yes">Activate</string>
     <string name="nfc_alert_no">Don´t Activate</string>
+    <string name="nfc_intent_received">Intent received</string>
 </resources>
