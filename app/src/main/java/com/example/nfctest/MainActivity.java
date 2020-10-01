@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
                             String string = tr.getText();
                             String[] parts = string.split("-");
                             int color = rgb(Integer.parseInt(parts[1]),
-                                    Integer.parseInt(parts[2]),
-                                    Integer.parseInt(parts[3]));
+                                            Integer.parseInt(parts[2]),
+                                            Integer.parseInt(parts[3]));
                             getWindow().getDecorView().setBackgroundColor(color);
                         } else if(record instanceof UriRecord) {
                             UriRecord ur = (UriRecord)record;
