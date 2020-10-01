@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -22,6 +23,8 @@ import org.ndeftools.wellknown.TextRecord;
 import org.ndeftools.wellknown.UriRecord;
 
 import java.util.List;
+
+import static android.graphics.Color.rgb;
 
 public class MainActivity extends AppCompatActivity {
     private NfcAdapter nfcAdapter;
@@ -104,9 +107,21 @@ public class MainActivity extends AppCompatActivity {
                         if(record instanceof TextRecord) {
                             TextRecord tr = (TextRecord) record;
                             Log.d(TAG, "TextRecord is " + tr.getText());
+                            // Werte colorstring in der Form c-12-55-255 aus und
+                            // setze die Bildschirmfarbe
+                            String string = tr.getText();
+                            String[] parts = string.split("-");
+                            int color = rgb(Integer.parseInt(parts[1]),
+                                    Integer.parseInt(parts[2]),
+                                    Integer.parseInt(parts[3]));
+                            getWindow().getDecorView().setBackgroundColor(color);
                         } else if(record instanceof UriRecord) {
                             UriRecord ur = (UriRecord)record;
                             Log.d(TAG, "UriRecord is " + ur.getUri());
+                            // impliziten Intent zum öffnen des Links
+                            Intent implicitIntent = new Intent(Intent.ACTION_VIEW);
+                            implicitIntent.setData(Uri.parse(ur.getUri().toString()));
+                            startActivity(implicitIntent);
                         }
                         else if(record instanceof AndroidApplicationRecord) {
                             AndroidApplicationRecord aar = (AndroidApplicationRecord)record;
