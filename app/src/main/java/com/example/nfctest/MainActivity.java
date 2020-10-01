@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
@@ -76,5 +79,19 @@ public class MainActivity extends AppCompatActivity {
         // Ansonsten Intent verarbeiten
         Toast.makeText(this, getString(R.string.nfc_intent_received) +
                 ": " + intent.getAction(), Toast.LENGTH_LONG).show();
+
+        Parcelable[] rawMessages =
+                intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        if (rawMessages != null && rawMessages.length > 0) {
+            NdefMessage[] messages = new NdefMessage[rawMessages.length];
+            Log.d(TAG, "handleNfcNdefIntent: message size = " + rawMessages.length);
+            for (int i = 0; i < rawMessages.length; i++) {
+                messages[i] = (NdefMessage) rawMessages[i];
+                for(NdefRecord record : messages[i].getRecords()) {
+                    String payloadStringData = new String(record.getPayload());
+                    Log.d(TAG, "handleNfcNdefIntent: " + payloadStringData);
+                }
+            }
+        }
     }
 }
