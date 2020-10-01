@@ -17,7 +17,9 @@ import android.widget.Toast;
 
 import org.ndeftools.Message;
 import org.ndeftools.Record;
+import org.ndeftools.externaltype.AndroidApplicationRecord;
 import org.ndeftools.wellknown.TextRecord;
+import org.ndeftools.wellknown.UriRecord;
 
 import java.util.List;
 
@@ -102,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
                         if(record instanceof TextRecord) {
                             TextRecord tr = (TextRecord) record;
                             Log.d(TAG, "TextRecord is " + tr.getText());
+                        } else if(record instanceof UriRecord) {
+                            UriRecord ur = (UriRecord)record;
+                            Log.d(TAG, "UriRecord is " + ur.getUri());
+                        }
+                        else if(record instanceof AndroidApplicationRecord) {
+                            AndroidApplicationRecord aar = (AndroidApplicationRecord)record;
+                            Log.d(TAG, "Package is " + aar.getPackageName());
                         }
                     }
                 } catch (Exception e) {
