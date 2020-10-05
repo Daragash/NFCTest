@@ -22,6 +22,7 @@
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
                 <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain" />
                 <data android:scheme="http" android:host="*" android:pathPattern=".*" />
                 <data android:scheme="https" android:host="*" android:pathPattern=".*" />
             </intent-filter>

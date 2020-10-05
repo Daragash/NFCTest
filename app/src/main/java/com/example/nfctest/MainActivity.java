@@ -86,7 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleNfcNdefIntent(Intent intent) {
         // Abbruch, wenn der Intent kein NFC-NDEF Intent ist
-        if (!intent.hasExtra(NfcAdapter.EXTRA_TAG)) return;
+        if (!intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
+            Toast.makeText(this, "Test123", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
         // Ansonsten Intent verarbeiten
         Toast.makeText(this, getString(R.string.nfc_intent_received) +
                 ": " + intent.getAction(), Toast.LENGTH_LONG).show();
